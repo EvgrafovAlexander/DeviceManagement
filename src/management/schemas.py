@@ -25,3 +25,10 @@ class UpdateResult(BaseModel):
     """Модель результата обновления состояния устройства"""
 
     success: bool = Field(title="True/False")
+
+
+class Command(BaseModel):
+    """Модель отправки команды на устройство"""
+
+    command: str = Field(title="Device command")
+    params: str = Field(title="Command parameters")

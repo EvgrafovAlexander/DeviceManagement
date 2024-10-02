@@ -2,7 +2,7 @@
 import uuid
 
 # thirdparty
-from sqlalchemy import Boolean, Column, String, ForeignKey
+from sqlalchemy import Boolean, Column, String, ForeignKey, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -54,3 +54,13 @@ class Device(CustomBase):
     status = Column(Boolean, default=False, doc="On/Off")
 
     type = relationship("DeviceType", back_populates="devices")
+
+
+class CommandLog(CustomBase):
+    __tablename__ = "command_logs"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, doc="Log id")
+    device_id = Column(UUID(as_uuid=True))
+    command = Column(String, doc="Device command")
+    params = Column(String, doc="Command parameters")
+    timestamp = Column(DateTime, server_default=func.now())
