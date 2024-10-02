@@ -2,7 +2,7 @@
 import uuid
 
 # thirdparty
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 # project
 from src.management.models import Device
@@ -17,3 +17,15 @@ class DeviceRepository(BaseRepository):
         device_raw = await self.session.execute(query)
         device = device_raw.scalar()
         return device
+
+    async def update_device_status(self, device_id: uuid.UUID, status: bool) -> bool:
+        query: str = (
+            update(self.model)
+            .where(self.model.id == str(device_id))
+            .values(
+                status=status,
+            )
+        )
+        result = await self.session.execute(query)
+        await self.session.commit()
+        return result.rowcount > 0

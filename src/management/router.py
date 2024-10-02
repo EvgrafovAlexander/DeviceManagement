@@ -8,7 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 # project
 from src.database import get_db_session
 from src.management.controllers.get_device_info import GetDeviceInfoController
-from src.management.schemas import DeviceInfo
+from src.management.controllers.update_device_status import UpdateDeviceStatusController
+from src.management.schemas import DeviceInfo, UpdateStatus, UpdateResult
 
 router = APIRouter(prefix="/devices", tags=["devices"])
 
@@ -22,15 +23,16 @@ async def get_device_info(
     return await GetDeviceInfoController(device_id, session)()
 
 
-# @router.put("/{device_id}/status")
-# async def update_device_status(
-#     device_id: int,
-#     session: AsyncSession = Depends(get_db_session),
-# ):
-#     """Обновляет состояние устройства"""
-#     return await UpdateDeviceStatusController(device_id, session)()
-#
-#
+@router.put("/{device_id}/status", response_model=UpdateResult)
+async def update_device_status(
+    device_id: uuid.UUID,
+    update_status: UpdateStatus,
+    session: AsyncSession = Depends(get_db_session),
+):
+    """Обновляет состояние устройства"""
+    return await UpdateDeviceStatusController(device_id, update_status, session)()
+
+
 # @router.put("/{device_id}/commands")
 # async def send_command_to_device(
 #     device_id: int,

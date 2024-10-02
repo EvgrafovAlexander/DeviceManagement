@@ -13,3 +13,15 @@ class DeviceInfo(BaseModel):
     house_id: UUID = Field(title="House id")
     serial_number: UUID = Field(title="Serial number")
     status: bool = Field(title="On/Off")
+
+
+class UpdateStatus(BaseModel):
+    """Модель обновления состояния устройства (вкл/выкл)"""
+
+    status: bool = Field(title="On/Off")
+
+
+class UpdateResult(BaseModel):
+    """Модель результата обновления состояния устройства"""
+
+    success: bool = Field(title="True/False")
