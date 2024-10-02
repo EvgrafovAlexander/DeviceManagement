@@ -11,7 +11,7 @@ from src.config import db_config
 from src.database import Base
 
 
-from src.management.models import Device, DeviceType  # noqa
+from src.management.models import Device, DeviceType, User, House  # noqa
 
 
 # this is the Alembic Config object, which provides

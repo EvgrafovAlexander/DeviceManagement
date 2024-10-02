@@ -10,6 +10,29 @@ from sqlalchemy.orm import relationship
 from src.database import CustomBase
 
 
+class User(CustomBase):
+    __tablename__ = "users"
+    id = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, doc="User id"
+    )
+    name = Column(String, doc="User name")
+    email = Column(String, doc="User e-mail")
+
+    houses = relationship("House", back_populates="user", cascade="all, delete-orphan")
+
+
+class House(CustomBase):
+    __tablename__ = "houses"
+
+    id = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, doc="House id"
+    )
+    address = Column(String, doc="Address")
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+
+    user = relationship("User", back_populates="houses")
+
+
 class DeviceType(CustomBase):
     __tablename__ = "device_types"
 
